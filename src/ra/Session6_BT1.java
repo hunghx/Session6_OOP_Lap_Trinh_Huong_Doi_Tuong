@@ -6,7 +6,9 @@ public class Session6_BT1 {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         Circle c1 = new Circle();
+        Circle c2 = new Circle();
         c1.inputData(sc);
+        c2.inputData(sc);
         c1.displayData();
         System.out.println("chu vi của hinh tròn c1 là "+c1.chuVi());
         System.out.println("diện tích của hinh tròn c1 là "+c1.dienTich());
@@ -46,6 +48,7 @@ public class Session6_BT1 {
             return Math.PI*radius*radius;
         }
         public  void inputData(Scanner scanner){
+
             System.out.println("Nhâp bán kính của hình tròn ");
             this.radius = Double.parseDouble(scanner.nextLine());
             System.out.println("Nhập màu sắc của hình tròn");
