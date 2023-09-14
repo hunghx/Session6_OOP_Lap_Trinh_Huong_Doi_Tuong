@@ -60,18 +60,18 @@ public class Student {
     public void setPhone(String phone) {
         this.phone = phone;
     }
-    public  void inputData(Scanner sc){
+    public  void inputData(){
 
         System.out.println("Nhập tên sv");
-        this.name=sc.nextLine();
+        this.name=InputMethods.getString();
         System.out.println("Nhập tuổi");
-        this.age= Integer.parseInt(sc.nextLine());
+        this.age= InputMethods.getInteger();
         System.out.println("Nhập giới tính");
-        this.sex= Boolean.parseBoolean(sc.nextLine());
+        this.sex= InputMethods.getBoolean();
         System.out.println("Nhập địa chỉ sv");
-        this.address=sc.nextLine();
+        this.address=InputMethods.getString();
         System.out.println("Nhập sô điện thoại sv");
-        this.phone=sc.nextLine();
+        this.phone=InputMethods.getString();
     }
     public void displayData(){
         System.out.println("-----------------------------------");
