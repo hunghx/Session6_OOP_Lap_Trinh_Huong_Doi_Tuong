@@ -3,17 +3,17 @@ package ra;
 import java.util.Scanner;
 
 public class Session6_BT5 {
-    private static Student[] students = new Student[100];
+    private static Student[] students = new Student[100]; // tất cả phần tử đều có gia trị = null;
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         // tạo menu
         while (true){
             System.out.println("-----------------Menu----------------");
-            System.out.println("1. Hiển thị danh sách tất cả học sinh\n" +
-                    "2. Thêm mới học sinh\n" +
-                    "3. Sửa thông tin học sinh dựa vào mã học sinh\n" +
-                    "4. Xoá học sinh\n" +
+            System.out.println("1. Hiển thị danh sách tất cả học sinh\n" + // READ
+                    "2. Thêm mới học sinh\n" + //CREATE
+                    "3. Sửa thông tin học sinh dựa vào mã học sinh\n" + // UPDATE
+                    "4. Xoá học sinh\n" +   // DELETE
                     "5. Thoát");
             System.out.println("Hãy nhập vào lưạ chon của bạn");
             int choice = Integer.parseInt(sc.nextLine());
@@ -25,7 +25,7 @@ public class Session6_BT5 {
                     addStudent(sc);
                     break;
                 case 3:
-
+                    editById(sc);
                     break;
                 case 4:
                     deleteById(sc);
@@ -41,20 +41,31 @@ public class Session6_BT5 {
             }
         }
 
-    }
+    } // phương thức chạy chương trình
     // thêm mới
-    public  static void displayAll(){
+    public static void displayAll(){
         for (Student s:students) {
             if(s!=null){
                 s.displayData();
             }
         }
     }
+
     // thêm moi
     public  static void addStudent(Scanner sc){
         // nhập vào dữ liệu
-        Student student = new Student();
+        Student student = new Student(); // tại sao lại càn tạo mới đối tượng để sử dụng inputData dùng
+        // để nhập dữ liệu cho sinh viên
+        System.out.println("Nhập Id mới : ");
+        int id = Integer.parseInt(sc.nextLine());
+        // kiểm tra tồn tại
+        if(findById(id)!=null){
+            System.err.println("Id đã tồn tại, vui long nhập lại");
+            return;
+        }
+        student.setId(id);
         student.inputData(sc);
+        // tìm kiếm phần tử null đầu tiên và thay thế vij trí của dối tượng mới vào vị trí đó
         for (int i = 0; i < students.length; i++) {
             if(students[i]==null){
                 students[i] = student;
@@ -64,101 +75,46 @@ public class Session6_BT5 {
         }
 
     }
+    // chỉnh sửa
+    public  static void editById(Scanner sc){
+        // nhập vàoo id cần sửa
+        System.out.println("Hãy nhập id cần sửa");
+        int id = Integer.parseInt(sc.nextLine());
+        Student student = findById(id);
+        if(student==null){
+            System.err.println("Không tìm thấy Id");
+            return;
+        }
+        // in ra giá trị cũ
+        System.out.println("Giá trị cũ");
+        student.displayData();
+        System.out.println("Hãy nhập thông tin mới");
+        // tiến hanh sửa
+        student.inputData(sc);
+        System.out.println("Cập nhật thành công");
+    }
     public  static void deleteById(Scanner sc){
         // nhập vàoo id cần xóa
-        int id = Integer.parseInt(sc.nextLine());
-        boolean check = true;
+        System.out.println("Hãy nhập id cần xóa");
+        int id = Integer.parseInt(sc.nextLine()); // Id gọi là định danh của đối tượng
+        // dùng để phân biệt các đội tượng với nhau
+        Student student = findById(id);
+        if(student==null){
+            System.err.println("Không tìm thấy idd");
+            return;
+        }
+        student = null;
+    }
+    // tìm kiếm theo id
+    public static Student findById(int id){
+        Student student = null;
         for (int i = 0; i < students.length; i++) {
-            if(students[i]!=null && students[i].getId()==id){
-                students[i] = null;
-                System.out.println("Xóa thành công");
-                check =false;
+            if (students[i]!=null && students[i].getId()==id){
+                student =students[i];
                 break;
             }
         }
-        if (check){
-            // chưa đc xóa
-            System.err.println("Xóa thất bại");
-        }
+        return student;
     }
-    static class Student {
-        private int id;
-        private String name;
-        public  int age;
-        private boolean sex;
-        private String address;
-        private  String phone;
 
-        public Student() {
-        }
-
-        public int getId() {
-            return id;
-        }
-
-        public void setId(int id) {
-            this.id = id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public int getAge() {
-            return age;
-        }
-
-        public void setAge(int age) {
-            this.age = age;
-        }
-
-        public boolean isSex() {
-            return sex;
-        }
-
-        public void setSex(boolean sex) {
-            this.sex = sex;
-        }
-
-        public String getAddress() {
-            return address;
-        }
-
-        public void setAddress(String address) {
-            this.address = address;
-        }
-
-        public String getPhone() {
-            return phone;
-        }
-
-        public void setPhone(String phone) {
-            this.phone = phone;
-        }
-        public  void inputData(Scanner sc){
-            System.out.println("Nhập Id : ");
-            this.id = Integer.parseInt(sc.nextLine());
-            System.out.println("Nhập tên sv");
-            this.name=sc.nextLine();
-            System.out.println("Nhập tuổi");
-            this.age= Integer.parseInt(sc.nextLine());
-            System.out.println("Nhập giới tính");
-            this.sex= Boolean.parseBoolean(sc.nextLine());
-            System.out.println("Nhập địa chỉ sv");
-            this.address=sc.nextLine();
-            System.out.println("Nhập sô điện thoại sv");
-            this.phone=sc.nextLine();
-        }
-        public void displayData(){
-            System.out.println("-----------------------------------");
-            System.out.println("id : "+ id +" | name : "+name);
-            System.out.println("age : "+ age + " tuổi | sex : " + (sex?"Nam":"Nữ"));
-            System.out.println("address : "+address +" | phone : "+phone );
-            System.out.println("-----------------------------------");
-        }
-    }
 }
