@@ -1,16 +1,23 @@
 package ra;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Session6_BT5 {
 
-    // phát triển ứng dụng qulsv sao cho khi số lượng sinh viên vượt
+    // phát triển ứng dụng qlsv sao cho khi số lượng sinh viên vượt
     // quá giá trị lưu trữ thì tự dộng tăng thêm 10 phân tử
 
     // validate dữ liệu dữ liệu người dùng nhập
     // vào để khôg bị dừng chương trình (thầy cho)
-    private static Student[] students = new Student[10]; // tất cả phần tử đều có gia trị = null;
-
+    private static Student[] students = new Student[4];// tất cả phần tử đều có gia trị = null;
+    static {
+    students[0] = new Student(1,"hung0",22,true,"Hà Nội","0984733526");
+    students[1] = new Student(2,"hung1",22,true,"Hà Nội","0923833526");
+    students[2] = new Student(3,"hung2",22,true,"Hà Nội","0928333526");
+    students[3] = new Student(4,"hung3",22,true,"Hà Nội","0949733526");
+    }
+    private static int size = 4;
     public static void main(String[] args) {
 
         // tạo menu
@@ -50,6 +57,10 @@ public class Session6_BT5 {
     } // phương thức chạy chương trình
     // thêm mới
     public static void displayAll(){
+        if (size==0){
+            System.err.println("Chưa có sv nào ");
+            return;
+        }
         for (Student s:students) {
             if(s!=null){
                 s.displayData();
@@ -59,16 +70,15 @@ public class Session6_BT5 {
 
     // thêm moi
     public  static void addStudent(){
+        // kiểm ta xem đẫ đầy chưa
+        if(students.length == size){
+            reSize();
+        }
+
         // nhập vào dữ liệu
         Student student = new Student(); // tại sao lại càn tạo mới đối tượng để sử dụng inputData dùng
         // để nhập dữ liệu cho sinh viên
-        System.out.println("Nhập Id mới : ");
-        int id = InputMethods.getInteger();
-        // kiểm tra tồn tại
-        if(findById(id)!=null){
-            System.err.println("Id đã tồn tại, vui long nhập lại");
-            return;
-        }
+        int id = getNewId();
         student.setId(id);
         student.inputData();
         // tìm kiếm phần tử null đầu tiên và thay thế vij trí của dối tượng mới vào vị trí đó
@@ -76,6 +86,7 @@ public class Session6_BT5 {
             if(students[i]==null){
                 students[i] = student;
                 System.out.println("Thêm thành công");
+                size++;
                 break;
             }
         }
@@ -109,7 +120,15 @@ public class Session6_BT5 {
             System.err.println("Không tìm thấy idd");
             return;
         }
-        student = null;
+        for (int i = 0; i < students.length; i++) {
+            if (students[i]!=null && students[i].getId()==id){
+                students[i] =null;
+                break;
+            }
+        }
+
+        System.out.println("Xóa thanh công");
+        size--;
     }
     // tìm kiếm theo id
     public static Student findById(int id){
@@ -121,6 +140,26 @@ public class Session6_BT5 {
             }
         }
         return student;
+    }
+    // mở rộng mảng thêm 10 ô chứa
+    public static void reSize(){
+        Student[] list = new Student[students.length+10];
+        // sao chép giá trij từ mảng cũ sang
+        for (int i = 0; i < students.length; i++) {
+            list[i] = students[i];
+        }
+        students = list;
+    }
+    // tự tạo id tự tăng
+    public static int getNewId(){
+        int idMax = 0;
+        for (Student s:students
+             ) {
+            if(s!=null && idMax<s.getId()){
+                idMax = s.getId();
+            }
+        }
+        return idMax+1;
     }
 
 }
